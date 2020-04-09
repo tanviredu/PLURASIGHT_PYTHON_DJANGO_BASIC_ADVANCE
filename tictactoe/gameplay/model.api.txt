@@ -11,6 +11,15 @@
 >>> g.status = 'S'
 >>> g.save()
 >>> 
+
+
+#########################################################################33
+######################################################3
+
+
+
+
+
 >>> # how to make a join query
 >>> ## game table is connected with the user table
 >>> ## so if you want to find the sone game where the secondplayer is someone then use the __ in the filyer
@@ -22,7 +31,8 @@
 >>> ## thats how you make a join query remember the __ is the join query
 
 
-
+##############################################################################
+##############################################################################
 
 
 
@@ -52,3 +62,6 @@
 >>> ### like filter the Game objects who make move in the game  but dont make any comment
 >>> g.move_set.exclude(comment='')
 <QuerySet [<Move: Move object (1)>]>
+
+
+
