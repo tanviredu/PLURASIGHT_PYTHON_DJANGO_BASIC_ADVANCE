@@ -1,0 +1,54 @@
+>>> from gameplay.models import Game,Move
+>>> Game.objects.all()
+<QuerySet [<Game: alice vs bob>, <Game: tanvir vs ornob>, <Game: bob vs tanvir>, <Game: alice vs ornob>]>
+>>> g = Game.objects.get(pk=1)
+>>> g
+<Game: alice vs bob>
+>>> Game.objects.filter(status='F')
+<QuerySet [<Game: tanvir vs ornob>, <Game: bob vs tanvir>]>
+>>> Game.objects.exclude(status='F')
+<QuerySet [<Game: alice vs bob>, <Game: alice vs ornob>]>
+>>> g.status = 'S'
+>>> g.save()
+>>> 
+>>> # how to make a join query
+>>> ## game table is connected with the user table
+>>> ## so if you want to find the sone game where the secondplayer is someone then use the __ in the filyer
+>>> 
+>>> Game.objects.filter(second_player__username='bob')
+<QuerySet [<Game: alice vs bob>]>
+>>> 
+>>> ## we get one game where the second player is bob
+>>> ## thats how you make a join query remember the __ is the join query
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>> m = Move(x=0,y=1,comment="let the best player win",by_first_player=True,game=g)
+>>> m
+<Move: Move object (None)>
+>>> m.save()
+>>> ## we can find the game info from the move object as it has a foreign key
+>>> m.game
+<Game: alice vs bob>
+>>> ### now as it has a relation ship to the g object now g object has the move property too
+>>> g.move_set
+<django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager object at 0x7f2a6a30add0>
+>>> g.move_set.all()
+<QuerySet [<Move: Move object (1)>]>
+>>> #### the move (Move object) can have multiple game or we can save the different 
+>>> ### pair of user or Game object can have related to the Move
+>>> ### because its a many to one relationship
+>>> ### so you can filter it in many way
+>>> ### like filter the Game objects who make move in the game  but dont make any comment
+>>> g.move_set.exclude(comment='')
+<QuerySet [<Move: Move object (1)>]>
