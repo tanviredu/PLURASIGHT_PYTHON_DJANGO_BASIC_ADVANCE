@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-
+from django.db.models import Q
+## this Q helps to add logic in query set
 
 ## this is the first table
 
@@ -20,7 +20,22 @@ GAME_STATUS_CHOICES = (
 )
 
 
+## you can make your own custom method 
+## in there
 
+class GamesQuerySet(models.QuerySet):
+
+    def games_for_user(self,user):
+        ## here we put the filer
+        return self.filter(
+            Q(first_player=user) | Q(second_player = user)
+        )
+
+    def active(self):
+        ## this will return all the unfinished game
+        return self.filter(
+            Q(status='F') | Q(status = 'S')
+        )
 
 
 
@@ -58,6 +73,9 @@ class Game(models.Model):
     ## so you need to provide a default data
     status = models.CharField(max_length=1,default='F',choices=GAME_STATUS_CHOICES)
 
+
+    ## we nee to amke the functoion avilable
+    objects = GamesQuerySet.as_manager()
 
     def __str__(self):
         return "{} vs {}".format(self.first_player,self.second_player)
